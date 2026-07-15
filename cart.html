@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart & Checkout — Lume Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="cart">
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">Lume<span>.</span>Home</a>
+      <nav class="nav">
+        <a href="shop.html">Shop</a>
+        <a href="shop.html#kitchen">Kitchen</a>
+        <a href="shop.html#textiles">Textiles</a>
+        <a href="shop.html#decor">Decor</a>
+        <a href="cart.html" class="cart-link">🛒 Cart <span class="cart-count" data-cart-count>0</span></a>
+      </nav>
+      <button class="nav-toggle" aria-label="Menu">☰</button>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container">
+      <h1 style="margin-bottom:30px">Your Cart</h1>
+      <div id="cart-view">
+        <div class="cart-layout">
+          <div id="cart-items"></div>
+          <aside id="cart-summary"></aside>
+        </div>
+
+        <div id="checkout" class="section" style="padding-top:50px">
+          <div class="section-head"><h2>Checkout</h2><p>Almost there — just a few details.</p></div>
+          <form id="checkout-form" class="container" style="max-width:680px">
+            <h3 style="margin-bottom:14px">Contact</h3>
+            <div class="field">
+              <label>Full name</label>
+              <input name="name" type="text" placeholder="Jane Doe" required>
+            </div>
+            <div class="field">
+              <label>Email</label>
+              <input name="email" type="email" placeholder="jane@email.com" required>
+            </div>
+
+            <h3 style="margin:24px 0 14px">Shipping address</h3>
+            <div class="field">
+              <label>Address</label>
+              <input name="address" type="text" placeholder="123 Maple Street" required>
+            </div>
+            <div class="row2">
+              <div class="field"><label>City</label><input name="city" type="text" placeholder="Portland" required></div>
+              <div class="field"><label>ZIP / Postcode</label><input name="zip" type="text" placeholder="97201" required></div>
+            </div>
+            <div class="field">
+              <label>Country</label>
+              <select name="country" required>
+                <option value="">Select…</option>
+                <option>United States</option>
+                <option>United Kingdom</option>
+                <option>Canada</option>
+                <option>Australia</option>
+                <option>Germany</option>
+                <option>France</option>
+              </select>
+            </div>
+
+            <h3 style="margin:24px 0 14px">Payment</h3>
+            <div class="pay-opts">
+              <div class="pay-opt" data-pay="card">💳 Card</div>
+              <div class="pay-opt" data-pay="paypal">🅿️ PayPal</div>
+              <div class="pay-opt" data-pay="apple"> Apple Pay</div>
+            </div>
+            <input type="hidden" id="pay-method" name="pay" value="card">
+            <div class="field">
+              <label>Card number</label>
+              <input name="card" type="text" placeholder="4242 4242 4242 4242" inputmode="numeric">
+            </div>
+            <div class="row2">
+              <div class="field"><label>Expiry</label><input name="exp" type="text" placeholder="MM / YY"></div>
+              <div class="field"><label>CVC</label><input name="cvc" type="text" placeholder="123" inputmode="numeric"></div>
+            </div>
+
+            <button class="btn btn--block btn--lg" type="submit" style="margin-top:10px">Place order</button>
+            <p class="note">🔒 This is a demo store. No real payment is processed — connect Stripe or PayPal to go live.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="footer-brand">Lume Home</div>
+        <p style="color:#8c857b;max-width:280px">Thoughtful home essentials for the everyday. Designed to be kept.</p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <a href="shop.html">All products</a>
+        <a href="shop.html">Kitchen</a>
+        <a href="shop.html">Textiles</a>
+        <a href="shop.html">Decor</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="index.html#story">Our story</a>
+        <a href="#">Sustainability</a>
+        <a href="#">Wholesale</a>
+      </div>
+      <div>
+        <h4>Support</h4>
+        <a href="#">Shipping & returns</a>
+        <a href="#">Contact us</a>
+        <a href="#">FAQ</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© 2026 Lume Home. All rights reserved.</span>
+      <span>Privacy · Terms · Cookies</span>
+    </div>
+  </footer>
+
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

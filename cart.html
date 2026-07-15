@@ -47,46 +47,8 @@
               <input name="email" type="email" placeholder="jane@email.com" required>
             </div>
 
-            <h3 style="margin:24px 0 14px">Shipping address</h3>
-            <div class="field">
-              <label>Address</label>
-              <input name="address" type="text" placeholder="123 Maple Street" required>
-            </div>
-            <div class="row2">
-              <div class="field"><label>City</label><input name="city" type="text" placeholder="Portland" required></div>
-              <div class="field"><label>ZIP / Postcode</label><input name="zip" type="text" placeholder="97201" required></div>
-            </div>
-            <div class="field">
-              <label>Country</label>
-              <select name="country" required>
-                <option value="">Select…</option>
-                <option>United States</option>
-                <option>United Kingdom</option>
-                <option>Canada</option>
-                <option>Australia</option>
-                <option>Germany</option>
-                <option>France</option>
-              </select>
-            </div>
-
-            <h3 style="margin:24px 0 14px">Payment</h3>
-            <div class="pay-opts">
-              <div class="pay-opt" data-pay="card">💳 Card</div>
-              <div class="pay-opt" data-pay="paypal">🅿️ PayPal</div>
-              <div class="pay-opt" data-pay="apple"> Apple Pay</div>
-            </div>
-            <input type="hidden" id="pay-method" name="pay" value="card">
-            <div class="field">
-              <label>Card number</label>
-              <input name="card" type="text" placeholder="4242 4242 4242 4242" inputmode="numeric">
-            </div>
-            <div class="row2">
-              <div class="field"><label>Expiry</label><input name="exp" type="text" placeholder="MM / YY"></div>
-              <div class="field"><label>CVC</label><input name="cvc" type="text" placeholder="123" inputmode="numeric"></div>
-            </div>
-
-            <button class="btn btn--block btn--lg" type="submit" style="margin-top:10px">Place order</button>
-            <p class="note">🔒 This is a demo store. No real payment is processed — connect Stripe or PayPal to go live.</p>
+            <p class="note">🔒 You'll enter your card &amp; shipping address on Stripe's secure checkout — we never see your card details.</p>
+            <button id="pay-btn" class="btn btn--block btn--lg" type="submit" style="margin-top:10px">Continue to secure payment</button>
           </form>
         </div>
       </div>

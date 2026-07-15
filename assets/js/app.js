@@ -10,6 +10,9 @@
   const fmt = S.formatPrice;
 
   function media(p, cls) {
+    if (p.image) {
+      return `<div class="${cls}"><img src="${p.image}" alt="${p.name}"></div>`;
+    }
     return `<div class="${cls}" style="background:linear-gradient(135deg, ${p.color}, ${shade(p.color, -18)})">
       ${p.name}
     </div>`;
@@ -27,11 +30,12 @@
   }
 
   function card(p) {
+    const tile = p.image
+      ? `<div class="product-media"><img src="${p.image}" alt="${p.name}"></div>`
+      : `<div class="product-media" style="background:linear-gradient(135deg, ${p.color}, ${shade(p.color, -18)})">${p.name}</div>`;
     return `<article class="product-card">
-      <div class="product-media" style="background:linear-gradient(135deg, ${p.color}, ${shade(p.color, -18)})">
-        ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ""}
-        ${p.name}
-      </div>
+      ${tile}
+      ${p.badge ? `<span class="product-badge" style="position:absolute;top:12px;left:12px;z-index:2">${p.badge}</span>` : ""}
       <div class="product-body">
         <span class="product-cat">${p.category}</span>
         <span class="product-name">${p.name}</span>
@@ -175,7 +179,7 @@
       }
       list.innerHTML = items.map((it) => `
         <div class="cart-item" data-id="${it.id}">
-          <div class="cart-thumb" style="background:linear-gradient(135deg, ${it.color}, ${shade(it.color, -18)})">${it.name.split(" ")[0]}</div>
+          ${it.image ? `<div class="cart-thumb"><img src="${it.image}" alt="${it.name}"></div>` : `<div class="cart-thumb" style="background:linear-gradient(135deg, ${it.color}, ${shade(it.color, -18)})">${it.name.split(" ")[0]}</div>`}
           <div>
             <h4>${it.name}</h4>
             <div class="muted">${fmt(it.price)} each</div>
@@ -234,13 +238,13 @@
       if (!emailEl.value.trim()) { emailEl.focus(); emailEl.style.borderColor = "#c0392b"; return; }
 
       btn.disabled = true;
-      btn.textContent = "Redirecting to Stripe…";
+      btn.textContent = "Redirecting to secure payment…";
 
       const sub = S.subtotal();
       const shipping = sub >= 75 || sub === 0 ? 0 : 7.5;
 
       try {
-        const res = await fetch("/.netlify/functions/create-checkout", {
+        const res = await fetch("/.netlify/functions/wf-create-checkout", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

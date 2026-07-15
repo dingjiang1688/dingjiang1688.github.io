@@ -152,12 +152,13 @@
 
     const confirmed = new URLSearchParams(location.search).get("placed");
     if (confirmed) {
+      S.clearCart();
       $("#cart-view").innerHTML = `
         <div class="confirm">
           <div class="check">✓</div>
           <h1>Thank you!</h1>
-          <p class="lead">Your order has been received. A confirmation has been sent to your email.</p>
-          <p class="note">This is a demo store — no real payment was processed.</p>
+          <p class="lead">Your order has been received and payment was processed securely via Stripe.</p>
+          <p class="note">A confirmation has been sent to your email.</p>
           <a class="btn btn--lg" href="shop.html" style="margin-top:18px">Continue shopping</a>
         </div>`;
       return;
@@ -211,7 +212,7 @@
         <div class="summary-row"><span>Shipping</span><span>${shipping === 0 ? "Free" : fmt(shipping)}</span></div>
         <div class="summary-row total"><span>Total</span><span>${fmt(sub + shipping)}</span></div>
         <button class="btn btn--block btn--lg" id="checkout-btn" style="margin-top:18px">Checkout</button>
-        <p class="note">Demo checkout — wire up Stripe / PayPal in production.</p>`;
+        <p class="note">Secured by Stripe — you'll complete payment on the next step.</p>`;
       $("#checkout-btn").addEventListener("click", () => $("#checkout").scrollIntoView({ behavior: "smooth" }));
     }
   }
@@ -220,26 +221,43 @@
   function initCheckout() {
     const form = $("#checkout-form");
     if (!form) return;
-    const opts = $$(".pay-opt");
-    opts.forEach((o) => o.addEventListener("click", () => {
-      opts.forEach((x) => x.classList.remove("active"));
-      o.classList.add("active");
-      $("#pay-method").value = o.getAttribute("data-pay");
-    }));
-    opts[0].classList.add("active");
-    $("#pay-method").value = opts[0].getAttribute("data-pay");
+    const btn = $("#pay-btn");
 
-    form.addEventListener("submit", (e) => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      // Basic validation
-      const required = ["name", "email", "address", "city", "zip", "country"];
-      for (const f of required) {
-        const el = form.querySelector(`[name="${f}"]`);
-        if (!el.value.trim()) { el.focus(); el.style.borderColor = "#c0392b"; return; }
+      const items = S.detailed();
+      if (!items.length) { alert("Your cart is empty."); return; }
+
+      const nameEl = form.querySelector("[name=name]");
+      const emailEl = form.querySelector("[name=email]");
+      if (!nameEl.value.trim()) { nameEl.focus(); nameEl.style.borderColor = "#c0392b"; return; }
+      if (!emailEl.value.trim()) { emailEl.focus(); emailEl.style.borderColor = "#c0392b"; return; }
+
+      btn.disabled = true;
+      btn.textContent = "Redirecting to Stripe…";
+
+      const sub = S.subtotal();
+      const shipping = sub >= 75 || sub === 0 ? 0 : 7.5;
+
+      try {
+        const res = await fetch("/.netlify/functions/create-checkout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            items: items.map((it) => ({ name: it.name, price: it.price, qty: it.qty })),
+            shipping,
+            customer_email: emailEl.value.trim(),
+            customer_name: nameEl.value.trim()
+          })
+        });
+        const data = await res.json();
+        if (data.url) location.href = data.url;
+        else throw new Error(data.error || "No checkout URL returned");
+      } catch (err) {
+        alert("Could not start checkout: " + err.message);
+        btn.disabled = false;
+        btn.textContent = "Continue to secure payment";
       }
-      // In production: send to backend / Stripe here.
-      S.clearCart();
-      location.href = "cart.html?placed=1";
     });
   }
 
